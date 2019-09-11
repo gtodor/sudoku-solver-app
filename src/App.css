@@ -1,0 +1,69 @@
+.App {
+  text-align: center;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+body {
+  background-color: #0a0e14;
+  color: #b3b1ad;
+  height: 100%;
+}
+
+html {
+  height: 100%;
+}
+
+#root {
+  height: 100%;
+}
+
+.Sudoku {
+  display: flex;
+  justify-content: space-around;
+}
+
+input[type="text"] {
+  -moz-appearance: textfield;
+  border: none;
+  box-shadow: none;
+  background-color: #0a0e14;
+  color: #b3b1ad;
+  height: 60px;
+  width: 60px;
+  font-family: "Courier New", Courier, monospace;
+  font-size: xx-large;
+}
+
+input[type="text"]:focus {
+  outline: none;
+}
+
+table {
+  border: 1px solid #b3b1ad;
+  border-collapse: collapse;
+}
+
+td {
+  padding: 0;
+  text-align: center;
+  border: 1px solid #b3b1ad;
+}
+
+td:first-child {
+  border-left: solid;
+}
+
+td:nth-child(3n) {
+  border-right: solid;
+}
+
+tr:first-child {
+  border-top: solid;
+}
+
+tr:nth-child(3n) td {
+  border-bottom: solid;
+}
