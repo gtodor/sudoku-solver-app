@@ -11,8 +11,9 @@ class Sudoku extends React.Component {
       cells: new Array(81).fill(0),
       rowIndexes: Array.from(Array(9).keys()),
       columnIndexes: Array.from(Array(9).keys()),
+      cluesIndexes: [],
       alertMessages: [],
-      loading: false,
+      loading: false
     };
   }
 
@@ -23,7 +24,8 @@ class Sudoku extends React.Component {
         ...this.state.cells.slice(0, index),
         value,
         ...this.state.cells.slice(index + 1)
-      ]
+      ],
+      cluesIndexes: [...this.state.cluesIndexes, index]
     });
   };
 
@@ -37,7 +39,7 @@ class Sudoku extends React.Component {
   solveSudoku = () => {
     const sudoku = this.state.cells.join("");
     this.setState({
-      loading: true,
+      loading: true
     });
 
     fetch(
@@ -71,7 +73,8 @@ class Sudoku extends React.Component {
 
   clearSudoku = () => {
     this.setState({
-      cells: new Array(81).fill(0)
+      cells: new Array(81).fill(0),
+      cluesIndexes: []
     });
   };
 
@@ -98,16 +101,19 @@ class Sudoku extends React.Component {
           <tbody>
             {this.state.rowIndexes.map(rowIndex => (
               <tr key={"row_" + rowIndex}>
-                {this.state.columnIndexes.map(columnIndex => (
-                  <td key={"cell_" + rowIndex + "_" + columnIndex}>
-                    <Cell
-                      value={this.state.cells[rowIndex * 9 + columnIndex]}
-                      rowIndex={rowIndex}
-                      columnIndex={columnIndex}
-                      onChange={this.changeValue}
-                    />
-                  </td>
-                ))}
+                {this.state.columnIndexes.map(columnIndex => {
+                  const isClue = this.state.cluesIndexes.indexOf(rowIndex*9+columnIndex) !== -1;
+                  return (
+                    <td key={"cell_" + rowIndex + "_" + columnIndex} className={isClue? "clueCell": ""}>
+                      <Cell
+                        value={this.state.cells[rowIndex * 9 + columnIndex]}
+                        rowIndex={rowIndex}
+                        columnIndex={columnIndex}
+                        onChange={this.changeValue}
+                      />
+                    </td>
+                  );
+                })}
               </tr>
             ))}
           </tbody>

@@ -62,6 +62,10 @@ a {
   outline: none;
 }
 
+.clueCell {
+  background-color: crimson;
+}
+
 input[type="text"] {
   -moz-appearance: textfield;
   border: none;
