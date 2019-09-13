@@ -22,7 +22,44 @@ html {
 
 .Sudoku {
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  width: 60%;
+  align-self: center;
+}
+
+.buttonsPanel {
+  display: flex;
+  flex-direction: column;
+  align-self: center;
+}
+
+.button {
+  margin-bottom: 20px;
+}
+
+.toastRegion {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+}
+
+.whiteBody {
+  background-color: whitesmoke;
+  color: rgb(27, 27, 27);
+  opacity: 1;
+}
+
+.header {
+  display: flex;
+}
+
+.titleBar {
+  flex: 2;
+}
+
+a {
+  outline: none;
 }
 
 input[type="text"] {
