@@ -85,12 +85,14 @@ a {
 table {
   border: 6px solid #b3b1ad;
   border-collapse: collapse;
+  user-select: none;
 }
 
 td {
   padding: 0;
   text-align: center;
   border: 2px solid #b3b1ad;
+  cursor: default;
 }
 
 td:first-child {
