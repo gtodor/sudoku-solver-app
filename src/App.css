@@ -28,6 +28,25 @@ html {
   align-self: center;
 }
 
+.SudokuCell {
+  border: none;
+  box-shadow: none;
+  background-color: #0a0e14;
+  color: #b3b1ad;
+  height: 60px;
+  width: 60px;
+  font-family: "Courier New", Courier, monospace;
+  font-size: xx-large;
+}
+
+.SudokuCell:focus {
+  border: 2px solid crimson;
+}
+
+.isHint {
+  background-color: #1e283a;
+}
+
 .buttonsPanel {
   display: flex;
   flex-direction: column;
@@ -59,26 +78,6 @@ html {
 }
 
 a {
-  outline: none;
-}
-
-.clueCell {
-  background-color: crimson;
-}
-
-input[type="text"] {
-  -moz-appearance: textfield;
-  border: none;
-  box-shadow: none;
-  background-color: #0a0e14;
-  color: #b3b1ad;
-  height: 60px;
-  width: 60px;
-  font-family: "Courier New", Courier, monospace;
-  font-size: xx-large;
-}
-
-input[type="text"]:focus {
   outline: none;
 }
 

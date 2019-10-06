@@ -8,10 +8,10 @@ class Sudoku extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      cells: new Array(81).fill(0),
+      cells: new Array(81).fill({ value: 0, isHint: false }),
       rowIndexes: Array.from(Array(9).keys()),
       columnIndexes: Array.from(Array(9).keys()),
-      cluesIndexes: [],
+      solved: false,
       alertMessages: [],
       loading: false
     };
@@ -22,10 +22,10 @@ class Sudoku extends React.Component {
     this.setState({
       cells: [
         ...this.state.cells.slice(0, index),
-        value,
+        { value, isHint: value !== 0 },
         ...this.state.cells.slice(index + 1)
       ],
-      cluesIndexes: [...this.state.cluesIndexes, index]
+      solved: false,
     });
   };
 
@@ -37,7 +37,7 @@ class Sudoku extends React.Component {
   };
 
   solveSudoku = () => {
-    const sudoku = this.state.cells.join("");
+    const sudoku = this.state.cells.map(cell => cell.value).join("");
     this.setState({
       loading: true
     });
@@ -50,8 +50,13 @@ class Sudoku extends React.Component {
     )
       .then(this.handleErrors)
       .then(response => {
+        const cells = response.solution.map((value, index) => ({
+          value,
+          isHint: this.state.cells[index].isHint
+        }));
         this.setState({
-          cells: response.solution,
+          cells,
+          solved: true,
           loading: false
         });
       })
@@ -64,7 +69,8 @@ class Sudoku extends React.Component {
               ...this.state.alertMessages,
               { message: errJson.error, key }
             ],
-            cells: new Array(81).fill(0),
+            cells: new Array(81).fill({ value: 0, isHint: false }),
+            solved: false,
             loading: false
           });
         });
@@ -73,8 +79,8 @@ class Sudoku extends React.Component {
 
   clearSudoku = () => {
     this.setState({
-      cells: new Array(81).fill(0),
-      cluesIndexes: []
+      cells: new Array(81).fill({ value: 0, isHint: false }),
+      solved: false,
     });
   };
 
@@ -101,25 +107,25 @@ class Sudoku extends React.Component {
           <tbody>
             {this.state.rowIndexes.map(rowIndex => (
               <tr key={"row_" + rowIndex}>
-                {this.state.columnIndexes.map(columnIndex => {
-                  const isClue = this.state.cluesIndexes.indexOf(rowIndex*9+columnIndex) !== -1;
-                  return (
-                    <td key={"cell_" + rowIndex + "_" + columnIndex} className={isClue? "clueCell": ""}>
-                      <Cell
-                        value={this.state.cells[rowIndex * 9 + columnIndex]}
-                        rowIndex={rowIndex}
-                        columnIndex={columnIndex}
-                        onChange={this.changeValue}
-                      />
-                    </td>
-                  );
-                })}
+                {this.state.columnIndexes.map(columnIndex => (
+                  <td key={"cell_" + rowIndex + "_" + columnIndex}>
+                    <Cell
+                      value={this.state.cells[rowIndex * 9 + columnIndex].value}
+                      isHint={this.state.cells[rowIndex * 9 + columnIndex].isHint}
+                      isSolved={this.state.solved}
+                      rowIndex={rowIndex}
+                      columnIndex={columnIndex}
+                      onChange={this.changeValue}
+                    />
+                  </td>
+                ))}
               </tr>
             ))}
           </tbody>
         </table>
         <div className="buttonsPanel">
           <Button
+            tabIndex={-1}
             variant="outline-primary"
             size="lg"
             className="button"
@@ -142,6 +148,7 @@ class Sudoku extends React.Component {
             )}
           </Button>
           <Button
+            tabIndex={-1}
             variant="outline-primary"
             size="lg"
             className="button"
